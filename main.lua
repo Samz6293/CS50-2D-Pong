@@ -11,6 +11,8 @@ WINDOW_HEIGHT = 720
 VIRTUAL_WIDTH = 432
 VIRTUAL_HEIGHT = 243
 
+PADDLE_SPEED = 200
+
 function love.load()
 	--[[
     Runs when the game first starts up, only once; used to initialize the game.
@@ -25,6 +27,10 @@ function love.load()
 	player1score = 0
 	player2score = 0
 	-- player scores
+
+	player1Y = 10
+	player2Y = VIRTUAL_HEIGHT - 30
+	-- setting y value for players
 
 	love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {
 		resizable = false,
@@ -50,6 +56,21 @@ function love.keypressed(key)
 	end
 end
 
+function love.update(dt)
+	-- controls for player1
+	if love.keyboard.isDown("w") then
+		player1Y = player1Y + -PADDLE_SPEED * dt
+	elseif love.keyboard.isDown("s") then
+		player1Y = player1Y + PADDLE_SPEED * dt
+	end
+
+	-- controls for player2
+	if love.keyboard.isDown("up") then
+		player2Y = player2Y + -PADDLE_SPEED * dt
+	elseif love.keyboard.isDown("down") then
+		player2Y = player2Y + PADDLE_SPEED * dt
+	end
+end
 function love.draw()
 	--[[
     Called after update by LÖVE2D, used to draw anything to the screen,
@@ -69,9 +90,9 @@ function love.draw()
 	-- we are  using virtual width and height now for text placement
 
 	--paddle 1
-	love.graphics.rectangle("fill", 10, 10, 5, 20)
+	love.graphics.rectangle("fill", 10, player1Y, 5, 20)
 	--paddle 2
-	love.graphics.rectangle("fill", VIRTUAL_WIDTH - 15, VIRTUAL_HEIGHT - 30, 5, 20)
+	love.graphics.rectangle("fill", VIRTUAL_WIDTH - 15, player2Y, 5, 20)
 	--ball
 	love.graphics.rectangle("fill", VIRTUAL_WIDTH / 2 - 4, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
 	--drawing rectangles and ball
